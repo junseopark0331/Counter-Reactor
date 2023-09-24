@@ -2,68 +2,44 @@ import UIKit
 import ReactorKit
 import RxSwift
 
-
 class CounterViewReactor: Reactor {
     
-    let initialState: State
+    let initialState = State()
     
-    init() {
-        self.initialState = State(
-            value: 0,
-            isLoading: false
-        )
-    }
-    
+    //View의 Action 정의
     enum Action {
-        case plus
-        case minus
+        case increase
+        case decrease
     }
     
+    //Action을 받을 Mutation 정의
     enum Mutation {
         case increaseValue
         case decreaseValue
-        case setLoading(Bool)
-        case setAlertMessage(String)
     }
     
     struct State {
-        var value: Int
-        var isLoading: Bool
-        @Pulse var alertMessage: String?
+        var value: Int = 0
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .plus:
-            return Observable.concat([
-                Observable.just(Mutation.setLoading(true)),
-                Observable.just(Mutation.increaseValue).delay(.milliseconds(500), scheduler: MainScheduler.instance),
-                Observable.just(Mutation.setLoading(false)),
-                Observable.just(Mutation.setAlertMessage("increased!"))
-            ])
-        case .minus:
-            return Observable.concat([
-                Observable.just(Mutation.setLoading(true)),
-                Observable.just(Mutation.decreaseValue).delay(.milliseconds(500), scheduler: MainScheduler.instance),
-                Observable.just(Mutation.setLoading(false)),
-                Observable.just(Mutation.setAlertMessage("decreased!"))
-            ])
+        case .increase:
+            return Observable.just(Mutation.increaseValue)
+        case .decrease:
+            return Observable.just(Mutation.decreaseValue)
         }
     }
     
     func reduce(state: State, mutation: Mutation) -> State {
-        var state = state
+        var newState = state
         
         switch mutation {
-        case .increaseValue :
-            state.value += 1
-        case .decreaseValue :
-            state.value -= 1
-        case let .setLoading(isLoading) :
-            state.isLoading = isLoading
-        case let .setAlertMessage(message) :
-            state.alertMessage = message
+        case .increaseValue:
+            newState.value += 1
+        case .decreaseValue:
+            newState.value -= 1
         }
-        return state
+        return newState
     }
 }

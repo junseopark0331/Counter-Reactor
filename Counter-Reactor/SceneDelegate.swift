@@ -15,11 +15,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
-         window = UIWindow(windowScene: windowScene)
          
-         let mainViewController = ViewController() // 이 뷰컨트롤러를 내비게이션 컨트롤러에 담아볼게요!
+        self.window = UIWindow(windowScene: windowScene)
+        
+        let reactor = CounterViewReactor()
+        
+        let rootViewController = ViewController(reactor: reactor)
          
-         let navigationController = UINavigationController(rootViewController: mainViewController) // 내비게이션 컨트롤러에 처음으로 보여질 화면을 rootView로 지정해주고!
+         let navigationController = UINavigationController(rootViewController: rootViewController) // 내비게이션 컨트롤러에 처음으로 보여질 화면을 rootView로 지정해주고!
                 
         window?.rootViewController = navigationController // 시작을 위에서 만든 내비게이션 컨트롤러로 해주면 끝!
         window?.makeKeyAndVisible()
