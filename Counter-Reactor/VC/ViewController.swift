@@ -49,6 +49,8 @@ class ViewController: UIViewController, View {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        
+        
         addview()
         setLayout()
     }
@@ -74,6 +76,7 @@ class ViewController: UIViewController, View {
         decreaseButton.rx.tap
             .map{Reactor.Action.decrease}
             .bind(to: reactor.action)
+//            .dispose()
             .disposed(by: disposeBag)
         increaseButton.rx.tap
             .map{Reactor.Action.increase}
