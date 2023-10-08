@@ -76,7 +76,7 @@ class ViewController: UIViewController, View {
         decreaseButton.rx.tap
             .map{Reactor.Action.decrease}
             .bind(to: reactor.action)
-//            .dispose()
+            .dispose()
             .disposed(by: disposeBag)
         increaseButton.rx.tap
             .map{Reactor.Action.increase}
